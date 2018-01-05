@@ -2,6 +2,7 @@
 from datetime import datetime
 from app import db
 
+
 # 会员
 class User(db.Model):
     __tablename__ = "user"
@@ -43,7 +44,7 @@ class Tag(db.Model):
     movies = db.relationship("Movie", backref="tag")  # 电影 外键关联
 
     def __repr__(self):
-        return "<Tag {!r}".format(self.name)
+        return "<Tag {!r}>".format(self.name)
 
 
 # 电影
@@ -146,6 +147,10 @@ class Admin(db.Model):
 
     def __repr__(self):
         return "<Admin {!r}".format(self.name)
+
+    def check_pwd(self, pwd):
+        from werkzeug.security import check_password_hash
+        return check_password_hash(self.pwd, pwd)
 
 
 # 管理员登录日志
