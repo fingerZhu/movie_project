@@ -12,7 +12,7 @@
         <div class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">添加预告</h3>
+                    <h3 class="box-title">修改预告</h3>
                 </div>
                 <form role="form" method="POST" enctype="multipart/form-data">
                     <div class="box-body">
@@ -25,7 +25,7 @@
                         {% endfor %}
                         <div class="form-group">
                             <label for="input_title">{{ form.title.label }}</label>
-                            {{ form.title }}
+                            {{ form.title(value=preview.title) }}
                             {% for err in form.title.errors %}
                             <div class="col-md-12">
                                 <font style="color:red;">{{ err }}</font>
@@ -40,7 +40,7 @@
                                 <font style="color:red;">{{ err }}</font>
                             </div>
                             {% endfor %}
-                            <img data-src="holder.js/700x320" style="margin-top:5px;" class="img-responsive"
+                            <img src="{{ url_for('static',filename='uploads/'+preview.logo) }}" style="margin-top:5px;" class="img-responsive"
                                  alt="">
                         </div>
                     </div>

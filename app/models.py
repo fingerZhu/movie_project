@@ -12,7 +12,7 @@ class User(db.Model):
     email = db.Column(db.String(100), unique=True)  # 邮箱
     phone = db.Column(db.String(11), unique=True)  # 电话
     info = db.Column(db.Text)  # 个性简介
-    face = db.Column(db.String(255), unique=True)  # 头像地址
+    face = db.Column(db.String(255))  # 头像地址
     addtime = db.Column(db.DateTime, index=True, default=datetime.now)  # 注册时间
     uuid = db.Column(db.String(255), unique=True)  # 唯一标识符
     userlogs = db.relationship("Userlog", backref="user")  # 会员登录日志 外键关联
@@ -67,7 +67,7 @@ class Movie(db.Model):
     moviecols = db.relationship("Moviecol", backref="movie")  # 电影收藏 外键关联
 
     def __repr__(self):
-        return "<Movie {!r}".format(self.title)
+        return "<Movie {!r}>".format(self.title)
 
 
 # 上映预告
@@ -79,7 +79,7 @@ class Preview(db.Model):
     addtime = db.Column(db.DateTime, index=True, default=datetime.now)  # 添加时间
 
     def __repr__(self):
-        return "<Preview {!r}".format(self.title)
+        return "<Preview {!r}>".format(self.title)
 
 
 # 评论
@@ -92,7 +92,7 @@ class Comment(db.Model):
     addtime = db.Column(db.DateTime, index=True, default=datetime.now)  # 添加时间
 
     def __repr__(self):
-        return "<Comment {!r}".format(self.id)
+        return "<Comment {!r}>".format(self.id)
 
 
 # 电影收藏
@@ -105,7 +105,7 @@ class Moviecol(db.Model):
     addtime = db.Column(db.DateTime, index=True, default=datetime.now)  # 添加时间
 
     def __repr__(self):
-        return "<Moviecol {!r}".format(self.id)
+        return "<Moviecol {!r}>".format(self.id)
 
 
 # 权限
@@ -117,7 +117,7 @@ class Auth(db.Model):
     addtime = db.Column(db.DateTime, index=True, default=datetime.now)  # 添加时间
 
     def __repr__(self):
-        return "<Auth {!r}".format(self.name)
+        return "<Auth {!r}>".format(self.name)
 
 
 # 角色
@@ -130,7 +130,7 @@ class Role(db.Model):
     admins = db.relationship("Admin", backref="role")  # 管理员 外键关联
 
     def __repr__(self):
-        return "<Role {!r}".format(self.name)
+        return "<Role {!r}>".format(self.name)
 
 
 # 管理员
@@ -146,7 +146,7 @@ class Admin(db.Model):
     oplogs = db.relationship("Oplog", backref="admin")  # 操作日志 外键关联
 
     def __repr__(self):
-        return "<Admin {!r}".format(self.name)
+        return "<Admin {!r}>".format(self.name)
 
     def check_pwd(self, pwd):
         from werkzeug.security import check_password_hash
