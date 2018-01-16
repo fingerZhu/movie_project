@@ -64,7 +64,8 @@ def regist():
             email=data["email"],
             phone=data["phone"],
             pwd=generate_password_hash(data["pwd"]),
-            uuid=uuid.uuid4().hex
+            uuid=uuid.uuid4().hex,
+            face="20180108150558dd20b1539be94e0b854315bc9e9b63b6.png"
         )
         db.session.add(user)
         db.session.commit()
@@ -104,18 +105,15 @@ def moviecol():
 
 
 @home.route("/animation/")
-@user_login_req
 def animation():
     return render_template("home/animation.html")
 
 
 @home.route("/search/")
-@user_login_req
 def search():
     return render_template("home/search.html")
 
 
 @home.route("/play/")
-@user_login_req
 def play():
     return render_template("home/play.html")
