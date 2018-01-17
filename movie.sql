@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50719
 File Encoding         : 65001
 
-Date: 2018-01-12 17:23:52
+Date: 2018-01-17 18:32:01
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -287,7 +287,7 @@ CREATE TABLE `user` (
   UNIQUE KEY `uuid` (`uuid`),
   KEY `ix_user_addtime` (`addtime`),
   KEY `face` (`face`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user
@@ -301,6 +301,12 @@ INSERT INTO `user` VALUES ('12', '小A', '123', '470249856@qq.com', '18676861145
 INSERT INTO `user` VALUES ('13', '小B', '123', '174889464@qq.com', '18659294011', '小B', '20180108150558dd20b1539be94e0b854315bc9e9b63b6.png', '2018-01-08 16:49:20', '4d69cff7375940c193b3fb2da82510c4');
 INSERT INTO `user` VALUES ('14', '小C', '123', '597365465@qq.com', '18693483069', '小C', '20180108150558dd20b1539be94e0b854315bc9e9b63b6.png', '2018-01-08 16:49:20', '96c3ab11d67c4f4cb564567a7920e190');
 INSERT INTO `user` VALUES ('15', '小D', '123', '559930305@qq.com', '18685818318', '小D', '20180108150558dd20b1539be94e0b854315bc9e9b63b6.png', '2018-01-08 16:49:20', 'ccda261397eb4d699fc7464a3a08d23e');
+INSERT INTO `user` VALUES ('16', 'abc', 'pbkdf2:sha256:50000$Vqc4BBEK$80226856b94f304d46d9eace8ecdaf0207ec2f1969f201a5863936bb928516ce', '6235781672@qq.com', '18650078754', 'abc', '201801171409574a932b3fd9d8467fbbbe056a893c44cd.png', '2018-01-15 17:11:54', '1d605354c06442c18f555e63456557f1');
+INSERT INTO `user` VALUES ('17', 'abc123', 'pbkdf2:sha256:50000$MKQITHZf$aeece9f5ced2c2e3219fed7de34d5c866d137d94bd70bbc45cb265146855465c', '623578157@qq.com', '18650078733', 'abc123', '20180108150558dd20b1539be94e0b854315bc9e9b63b6.png', '2018-01-15 17:13:54', 'e5511fb8e9f946e0891977c865f0fe8e');
+INSERT INTO `user` VALUES ('18', 'zxc', 'pbkdf2:sha256:50000$JW3JYOSK$9fbe1731ea4f8fca9220b41de210b3eaf5ee1370f2ffcd08187390c11794b283', 'finger_zhu@qq.com', '18650078732', 'zxc', '20180108150558dd20b1539be94e0b854315bc9e9b63b6.png', '2018-01-15 17:14:57', '77ff0d26ed4a46e8b669de52b6808062');
+INSERT INTO `user` VALUES ('19', '12', 'pbkdf2:sha256:50000$SQo4dH4V$449162c9db58cdfebb2028add0a474ba4354201408f75dffff2393392f248391', '623278167@qq.com', '18650078736', '12', '20180108150558dd20b1539be94e0b854315bc9e9b63b6.png', '2018-01-15 17:15:44', 'b621a4080c75482ebdbd4386c48ca37a');
+INSERT INTO `user` VALUES ('20', 'ert', 'pbkdf2:sha256:50000$rrpx9PLl$621c7b58d753bd21da0cddac12327fbbb4586453ec95d18f188cb07af903da5f', '123578167@qq.com', '18640078754', 'ert', '20180108150558dd20b1539be94e0b854315bc9e9b63b6.png', '2018-01-15 17:16:48', '449f1cbfb7f745d9a5bcbac04026b47e');
+INSERT INTO `user` VALUES ('21', 'finger', 'pbkdf2:sha256:50000$sd8W3Uki$a4935f23dfc70ff5ef1d6503036cd6a32b2675b19f9ee9d04c9d75d137b31884', '523278167@qq.com', '18650078731', 'finger', '20180108150558dd20b1539be94e0b854315bc9e9b63b6.png', '2018-01-17 15:31:23', '90604c621ac4456ba93f267d92a1a137');
 
 -- ----------------------------
 -- Table structure for userlog
@@ -315,7 +321,7 @@ CREATE TABLE `userlog` (
   KEY `user_id` (`user_id`),
   KEY `ix_userlog_addtime` (`addtime`),
   CONSTRAINT `userlog_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of userlog
@@ -329,3 +335,12 @@ INSERT INTO `userlog` VALUES ('6', '14', '127.0.0.1', '2018-01-16');
 INSERT INTO `userlog` VALUES ('7', '7', '127.0.0.1', '2018-01-15');
 INSERT INTO `userlog` VALUES ('8', '13', '127.0.0.1', '2018-01-24');
 INSERT INTO `userlog` VALUES ('9', '12', '127.0.0.1', '2018-01-12');
+INSERT INTO `userlog` VALUES ('10', '16', '127.0.0.1', '2018-01-15');
+INSERT INTO `userlog` VALUES ('11', '16', '127.0.0.1', '2018-01-15');
+INSERT INTO `userlog` VALUES ('12', '16', '127.0.0.1', '2018-01-17');
+INSERT INTO `userlog` VALUES ('13', '16', '127.0.0.1', '2018-01-17');
+INSERT INTO `userlog` VALUES ('14', '16', '127.0.0.1', '2018-01-17');
+INSERT INTO `userlog` VALUES ('15', '16', '127.0.0.1', '2018-01-17');
+INSERT INTO `userlog` VALUES ('16', '16', '127.0.0.1', '2018-01-17');
+INSERT INTO `userlog` VALUES ('17', '16', '127.0.0.1', '2018-01-17');
+INSERT INTO `userlog` VALUES ('18', '21', '127.0.0.1', '2018-01-17');
