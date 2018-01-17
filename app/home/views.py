@@ -1,7 +1,7 @@
 # coding:utf8
 from . import home
 from flask import render_template, redirect, url_for, flash, session, request
-from app.home.forms import RegistForm, LoginForm
+from app.home.forms import RegistForm, LoginForm,UserDetailForm
 from app.models import User, Userlog
 from functools import wraps
 from werkzeug.security import generate_password_hash
@@ -72,11 +72,14 @@ def regist():
         return redirect(url_for("home.regist"))
     return render_template("home/register.html", form=form)
 
-
-@home.route("/user/")
+#会员修改资料
+@home.route("/user/", methods=["GET", "POST"])
 @user_login_req
 def user():
-    return render_template("home/user.html")
+    form = UserDetailForm()
+    if form.validate_on_submit():
+        data = form.data
+    return render_template("home/user.html",form=form)
 
 
 @home.route("/pwd/")

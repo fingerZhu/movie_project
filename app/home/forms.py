@@ -109,3 +109,52 @@ class LoginForm(FlaskForm):
         user = User.query.filter_by(name=name).count()
         if user == 0:
             raise ValidationError("账号不存在")
+
+class UserDetailForm(FlaskForm):
+    name = StringField(
+        label="昵称",
+        validators=[DataRequired("请输入昵称!")],
+        description="昵称",
+        render_kw={
+            "class": "form-control input-lg",
+            "placeholder": "请输入昵称!"
+        }
+    )
+    email = StringField(
+        label="邮箱",
+        validators=[DataRequired("请输入邮箱!"), Email("邮箱格式不正确")],
+        description="邮箱",
+        render_kw={
+            "class": "form-control input-lg",
+            "placeholder": "请输入邮箱!"
+        }
+    )
+    phone = StringField(
+        label="手机",
+        validators=[DataRequired("请输入手机!"), Regexp("1[3458]\d{9}", message="手机格式不正确")],
+        description="手机",
+        render_kw={
+            "class": "form-control input-lg",
+            "placeholder": "请输入手机!"
+        }
+    )
+    face = FileField(
+        label="头像",
+        validators=[DataRequired("请上传头像")],
+        description="头像"
+    )
+    info = TextAreaField(
+        label="简介",
+        validators=[DataRequired("请输入简介")],
+        description="简介",
+        render_kw={
+            "class": "form-control",
+            "rows": 10
+        }
+    )
+    submit = SubmitField(
+        '<span class="glyphicon glyphicon-saved"></span>&nbsp;保存修改',
+        render_kw={
+            "class": "btn btn-success"
+        }
+    )
