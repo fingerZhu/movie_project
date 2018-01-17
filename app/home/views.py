@@ -2,7 +2,7 @@
 from . import home
 from flask import render_template, redirect, url_for, flash, session, request
 from app.home.forms import RegistForm, LoginForm, UserDetailForm, PwdForm
-from app.models import User, Userlog,Preview
+from app.models import User, Userlog, Preview, Tag, Movie
 from functools import wraps
 from werkzeug.security import generate_password_hash
 from werkzeug.utils import secure_filename
@@ -24,9 +24,51 @@ def user_login_req(f):
     return decorated_function
 
 
-@home.route("/")
-def index():
-    return render_template("home/index.html")
+# 首页
+@home.route("/<int:page>", methods=["GET"])
+def index(page=None):
+    if page is None:
+        page = 1
+    tags = Tag.query.all()
+    tag_id = request.args.get("tag_id", 0)
+    page_data = Movie.query
+    # 标签
+    if int(tag_id) != 0:
+        page_data = page_data.filter_by(tag_id=int(tag_id))
+    # 星级
+    star = request.args.get("star", 0)
+    if int(star) != 0:
+        page_data = page_data.filter_by(star=int(star))
+    # 时间
+    time = request.args.get("time", 0)
+    if int(time) != 0:
+        if int(time) == 1:
+            page_data = page_data.order_by(Movie.addtime.desc())
+        else:
+            page_data = page_data.order_by(Movie.addtime.asc())
+    # 播放量
+    pm = request.args.get("pm", 0)
+    if int(pm) != 0:
+        if int(pm) == 1:
+            page_data = page_data.order_by(Movie.playnum.desc())
+        else:
+            page_data = page_data.order_by(Movie.playnum.asc())
+    # 评论量
+    cm = request.args.get("cm", 0)
+    if int(cm) != 0:
+        if int(cm) == 1:
+            page_data = page_data.order_by(Movie.commentnum.desc())
+        else:
+            page_data = page_data.order_by(Movie.commentnum.asc())
+    page_data = page_data.paginate(page=int(page), per_page=10)
+    p = dict(
+        tag_id=tag_id,
+        star=star,
+        time=time,
+        pm=pm,
+        cm=cm
+    )
+    return render_template("home/index.html", tags=tags, p=p, page_data=page_data)
 
 
 @home.route("/login/", methods=["GET", "POST"])
@@ -150,17 +192,17 @@ def comments():
 
 
 # 会员登录
-@home.route("/loginlog/<int:page>",methods=["GET"])
+@home.route("/loginlog/<int:page>", methods=["GET"])
 @user_login_req
 def loginlog(page=None):
     if page is None:
-        page =1
+        page = 1
     page_data = Userlog.query.filter_by(
-        user_id = int(session["user_id"])
+        user_id=int(session["user_id"])
     ).order_by(
         Userlog.addtime.desc(), Userlog.id
     ).paginate(page=page, per_page=10)
-    return render_template("home/loginlog.html",page_data=page_data)
+    return render_template("home/loginlog.html", page_data=page_data)
 
 
 @home.route("/moviecol/")
@@ -173,14 +215,26 @@ def moviecol():
 @home.route("/animation/")
 def animation():
     data = Preview.query.all()
-    return render_template("home/animation.html",data=data)
+    return render_template("home/animation.html", data=data)
 
 
-@home.route("/search/")
-def search():
-    return render_template("home/search.html")
+@home.route("/search/<int:page>/")
+def search(page=None):
+    if page is None:
+        page = 1
+    key = request.args.get("key", "")
+    page_data = Movie.query.filter(
+        Movie.title.ilike('%' + key + '%')
+    ).order_by(Movie.addtime.desc()).paginate(page=page, per_page=10)
+    return render_template("home/search.html", key=key, page_data=page_data)
 
 
-@home.route("/play/")
-def play():
-    return render_template("home/play.html")
+@home.route("/play/<int:id>")
+def play(id=None):
+    movie = Movie.query.join(
+        Tag
+    ).filter(
+        Tag.id == Movie.tag_id,
+        Movie.id == int(id)
+    ).first_or_404()
+    return render_template("home/play.html", movie=movie)

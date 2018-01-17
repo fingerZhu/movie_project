@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地数据库
-Source Server Version : 50719
+Source Server         : finger专用
+Source Server Version : 50718
 Source Host           : localhost:3306
 Source Database       : movie
 
 Target Server Type    : MYSQL
-Target Server Version : 50719
+Target Server Version : 50718
 File Encoding         : 65001
 
-Date: 2018-01-17 18:32:01
+Date: 2018-01-17 21:37:03
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -52,7 +52,7 @@ CREATE TABLE `adminlog` (
   KEY `admin_id` (`admin_id`),
   KEY `ix_adminlog_addtime` (`addtime`),
   CONSTRAINT `adminlog_ibfk_1` FOREIGN KEY (`admin_id`) REFERENCES `admin` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of adminlog
@@ -64,6 +64,7 @@ INSERT INTO `adminlog` VALUES ('4', '1', '127.0.0.1', '2018-01-11');
 INSERT INTO `adminlog` VALUES ('5', '1', '127.0.0.1', '2018-01-11');
 INSERT INTO `adminlog` VALUES ('6', '2', '127.0.0.1', '2018-01-11');
 INSERT INTO `adminlog` VALUES ('7', '1', '127.0.0.1', '2018-01-11');
+INSERT INTO `adminlog` VALUES ('8', '1', '127.0.0.1', '2018-01-17');
 
 -- ----------------------------
 -- Table structure for auth
@@ -216,13 +217,16 @@ CREATE TABLE `preview` (
   UNIQUE KEY `title` (`title`),
   UNIQUE KEY `logo` (`logo`),
   KEY `ix_preview_addtime` (`addtime`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of preview
 -- ----------------------------
 INSERT INTO `preview` VALUES ('1', '木乃伊12', '201801081623428d93529f29384fc298c08fcef19be61d.png', '2018-01-08 15:51:26');
 INSERT INTO `preview` VALUES ('3', '武器而', '20180110144603ba1dd8189b444b90a4d1fddde77d7b73.png', '2018-01-10 14:46:04');
+INSERT INTO `preview` VALUES ('4', '333', '201801172014083e239648c30c4b4d95ad4b2fe5d63849.jpg', '2018-01-17 20:14:08');
+INSERT INTO `preview` VALUES ('5', '444', '201801172014157113700d9f844513a2c3f7187b3bef6a.jpg', '2018-01-17 20:14:15');
+INSERT INTO `preview` VALUES ('6', '555', '20180117201421c743252d979846c0a751d86a099a6d9d.jpg', '2018-01-17 20:14:21');
 
 -- ----------------------------
 -- Table structure for role
@@ -321,7 +325,7 @@ CREATE TABLE `userlog` (
   KEY `user_id` (`user_id`),
   KEY `ix_userlog_addtime` (`addtime`),
   CONSTRAINT `userlog_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of userlog
@@ -344,3 +348,5 @@ INSERT INTO `userlog` VALUES ('15', '16', '127.0.0.1', '2018-01-17');
 INSERT INTO `userlog` VALUES ('16', '16', '127.0.0.1', '2018-01-17');
 INSERT INTO `userlog` VALUES ('17', '16', '127.0.0.1', '2018-01-17');
 INSERT INTO `userlog` VALUES ('18', '21', '127.0.0.1', '2018-01-17');
+INSERT INTO `userlog` VALUES ('19', '21', '127.0.0.1', '2018-01-17');
+INSERT INTO `userlog` VALUES ('20', '16', '127.0.0.1', '2018-01-17');
