@@ -1,8 +1,8 @@
 # coding:utf8
 from . import home
 from flask import render_template, redirect, url_for, flash, session, request
-from app.home.forms import RegistForm, LoginForm, UserDetailForm, PwdForm
-from app.models import User, Userlog, Preview, Tag, Movie
+from app.home.forms import RegistForm, LoginForm, UserDetailForm, PwdForm, CommentForm
+from app.models import User, Userlog, Preview, Tag, Movie, Comment, Moviecol
 from functools import wraps
 from werkzeug.security import generate_password_hash
 from werkzeug.utils import secure_filename
@@ -185,14 +185,26 @@ def pwd():
     return render_template("home/pwd.html", form=form)
 
 
-@home.route("/comments/")
+@home.route("/comments/<int:page>/")
 @user_login_req
-def comments():
-    return render_template("home/comments.html")
+def comments(page=None):
+    if page is None:
+        page = 1
+    page_data = Comment.query.join(
+        Movie
+    ).join(
+        User
+    ).filter(
+        Movie.id == Comment.movie_id,
+        User.id == session["user_id"]
+    ).order_by(
+        Comment.addtime.desc()
+    ).paginate(page=page, per_page=10)
+    return render_template("home/comments.html", page_data=page_data)
 
 
 # 会员登录
-@home.route("/loginlog/<int:page>", methods=["GET"])
+@home.route("/loginlog/<int:page>/", methods=["GET"])
 @user_login_req
 def loginlog(page=None):
     if page is None:
@@ -205,10 +217,46 @@ def loginlog(page=None):
     return render_template("home/loginlog.html", page_data=page_data)
 
 
-@home.route("/moviecol/")
+# 添加收藏电影
+@home.route("/moviecol/add/", methods=["GET"])
 @user_login_req
-def moviecol():
-    return render_template("home/movieCol.html")
+def moviecol_add():
+    mid = request.args.get("mid", "")
+    uid = request.args.get("uid", "")
+    moviecol_count = Moviecol.query.filter_by(
+        user_id=int(uid),
+        movie_id=int(mid)
+    ).count()
+    if moviecol_count == 1:
+        data = dict(ok=0)
+    elif moviecol_count == 0:
+        moviecol = Moviecol(
+            user_id=int(uid),
+            movie_id=int(mid),
+            content="废话"
+        )
+        db.session.add(moviecol)
+        db.session.commit()
+        data = dict(ok=1)
+    import json
+    return json.dumps(data)
+
+
+# 收藏电影
+@home.route("/moviecol/<int:page>", methods=["GET", "POST"])
+@user_login_req
+def moviecol(page=None):
+    if page is None:
+        page = 1
+    page_data = Moviecol.query.join(
+        Movie
+    ).filter(
+        Movie.id == Moviecol.movie_id,
+        Moviecol.user_id == int(session["user_id"])
+    ).order_by(
+        Moviecol.addtime.desc(), Moviecol.id
+    ).paginate(page=page, per_page=10)
+    return render_template("home/movieCol.html",page_data=page_data)
 
 
 # 上映预告
@@ -229,12 +277,43 @@ def search(page=None):
     return render_template("home/search.html", key=key, page_data=page_data)
 
 
-@home.route("/play/<int:id>")
-def play(id=None):
+@home.route("/play/<int:id>/<int:page>/", methods=["GET", "POST"])
+def play(id=None, page=None):
+    if page is None:
+        page = 1
     movie = Movie.query.join(
         Tag
     ).filter(
         Tag.id == Movie.tag_id,
         Movie.id == int(id)
     ).first_or_404()
-    return render_template("home/play.html", movie=movie)
+
+    page_data = Comment.query.join(
+        Movie
+    ).join(
+        User
+    ).filter(
+        Movie.id == movie.id,
+        User.id == Comment.user_id
+    ).order_by(
+        Comment.addtime.desc()
+    ).paginate(page=page, per_page=10)
+
+    if request.method == "GET":
+        movie.playnum += 1
+    form = CommentForm()
+    if "user" in session and form.validate_on_submit():
+        data = form.data
+        comment = Comment(
+            content=data["content"],
+            movie_id=movie.id,
+            user_id=session["user_id"]
+        )
+        movie.commentnum += 1
+        db.session.add(comment)
+        db.session.commit()
+        flash("评论成功", "ok")
+        return redirect(url_for("home.play", id=movie.id, page=1))
+    db.session.add(movie)
+    db.session.commit()
+    return render_template("home/play.html", movie=movie, form=form, page_data=page_data)

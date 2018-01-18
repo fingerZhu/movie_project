@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : finger专用
-Source Server Version : 50718
+Source Server         : 本地数据库
+Source Server Version : 50719
 Source Host           : localhost:3306
 Source Database       : movie
 
 Target Server Type    : MYSQL
-Target Server Version : 50718
+Target Server Version : 50719
 File Encoding         : 65001
 
-Date: 2018-01-17 21:37:03
+Date: 2018-01-18 17:58:34
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -105,17 +105,19 @@ CREATE TABLE `comment` (
   KEY `ix_comment_addtime` (`addtime`),
   CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`movie_id`) REFERENCES `movie` (`id`),
   CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of comment
 -- ----------------------------
-INSERT INTO `comment` VALUES ('1', '好看', '4', '7', '2018-01-10 10:19:26');
-INSERT INTO `comment` VALUES ('2', '经典', '4', '15', '2018-01-10 10:19:27');
-INSERT INTO `comment` VALUES ('3', '给力', '6', '12', '2018-01-10 10:19:27');
-INSERT INTO `comment` VALUES ('5', '垃圾', '4', '10', '2018-01-10 10:19:28');
-INSERT INTO `comment` VALUES ('6', '无聊', '4', '14', '2018-01-10 10:19:28');
-INSERT INTO `comment` VALUES ('7', '恶心', '4', '12', '2018-01-10 10:19:28');
+INSERT INTO `comment` VALUES ('8', '好看', '4', '16', '2018-01-18 11:27:31');
+INSERT INTO `comment` VALUES ('9', '无聊', '4', '16', '2018-01-18 11:28:05');
+INSERT INTO `comment` VALUES ('10', '恶心', '4', '16', '2018-01-18 16:27:54');
+INSERT INTO `comment` VALUES ('11', '给力', '4', '16', '2018-01-18 16:28:07');
+INSERT INTO `comment` VALUES ('12', 'OK', '4', '16', '2018-01-18 16:32:59');
+INSERT INTO `comment` VALUES ('13', '还行吧', '4', '16', '2018-01-18 16:35:25');
+INSERT INTO `comment` VALUES ('14', '<img src=\"http://img.baidu.com/hi/jx2/j_0016.gif\"/>', '4', '16', '2018-01-18 16:35:32');
+INSERT INTO `comment` VALUES ('15', '<p>&lt;b&gt;好的&lt;/b&gt;</p>', '4', '16', '2018-01-18 16:36:59');
 
 -- ----------------------------
 -- Table structure for movie
@@ -147,7 +149,7 @@ CREATE TABLE `movie` (
 -- ----------------------------
 -- Records of movie
 -- ----------------------------
-INSERT INTO `movie` VALUES ('4', '环太平洋', '20180108144022bb437dab382a438bb7ab00a0caea5fe3.mp4', '阿瓦尔撒地方', '2018010814402274aafb140ec044cb8e0a204fe4fd47af.png', '5', '0', '0', '5', '美国', '2018-02-01', '5', '2018-01-08 14:40:23');
+INSERT INTO `movie` VALUES ('4', '环太平洋', '20180108144022bb437dab382a438bb7ab00a0caea5fe3.mp4', '阿瓦尔撒地方', '2018010814402274aafb140ec044cb8e0a204fe4fd47af.png', '5', '34', '8', '5', '美国', '2018-02-01', '5', '2018-01-08 14:40:23');
 INSERT INTO `movie` VALUES ('6', '啥的符文123456', '201801081533406734d40cd2bb49b38d313ab2de42da4e.mp4', '玩儿玩儿人123456', '2018010815334044e8e44466744e0aa884b0f12b8fe1c0.png', '1', '0', '0', '6', '名人堂123456', '2018-01-21', '3123456', '2018-01-08 15:05:59');
 
 -- ----------------------------
@@ -166,7 +168,7 @@ CREATE TABLE `moviecol` (
   KEY `ix_moviecol_addtime` (`addtime`),
   CONSTRAINT `moviecol_ibfk_1` FOREIGN KEY (`movie_id`) REFERENCES `movie` (`id`),
   CONSTRAINT `moviecol_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of moviecol
@@ -180,6 +182,7 @@ INSERT INTO `moviecol` VALUES ('7', '废话', '6', '11', '2018-01-10 11:01:25');
 INSERT INTO `moviecol` VALUES ('8', '废话', '4', '14', '2018-01-10 11:01:25');
 INSERT INTO `moviecol` VALUES ('9', '废话', '6', '12', '2018-01-10 11:01:25');
 INSERT INTO `moviecol` VALUES ('10', '废话', '4', '12', '2018-01-10 11:01:25');
+INSERT INTO `moviecol` VALUES ('12', '废话', '4', '16', '2018-01-18 17:05:30');
 
 -- ----------------------------
 -- Table structure for oplog
@@ -325,7 +328,7 @@ CREATE TABLE `userlog` (
   KEY `user_id` (`user_id`),
   KEY `ix_userlog_addtime` (`addtime`),
   CONSTRAINT `userlog_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of userlog
@@ -350,3 +353,7 @@ INSERT INTO `userlog` VALUES ('17', '16', '127.0.0.1', '2018-01-17');
 INSERT INTO `userlog` VALUES ('18', '21', '127.0.0.1', '2018-01-17');
 INSERT INTO `userlog` VALUES ('19', '21', '127.0.0.1', '2018-01-17');
 INSERT INTO `userlog` VALUES ('20', '16', '127.0.0.1', '2018-01-17');
+INSERT INTO `userlog` VALUES ('21', '21', '127.0.0.1', '2018-01-18');
+INSERT INTO `userlog` VALUES ('22', '16', '127.0.0.1', '2018-01-18');
+INSERT INTO `userlog` VALUES ('23', '21', '127.0.0.1', '2018-01-18');
+INSERT INTO `userlog` VALUES ('24', '16', '127.0.0.1', '2018-01-18');
